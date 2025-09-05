@@ -1,0 +1,29 @@
+name: Maintain Streak
+
+# This workflow can be manually triggered from the Actions tab
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check out the repository's code
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # Step 2: Make a change, commit, and push
+      - name: Commit and Push
+        run: |
+          # Configure git with the user name and email of the GitHub Actions bot
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "actions-bot@github.com"
+          
+          # Append the current timestamp to the README.md file
+          echo "Last updated on $(date)" >> README.md
+          
+          # Add the changes, commit with a message, and push to the main branch
+          git add README.md
+          git commit -m "feat: update streak"
+          git push
