@@ -1,3 +1,5 @@
+# .github/workflows/maintain-streak.yml
+
 name: Maintain Streak
 
 # This workflow can be manually triggered from the Actions tab
@@ -8,6 +10,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    # Add this permissions block to grant write access to the repository
+    permissions:
+      contents: write
+
     steps:
       # Step 1: Check out the repository's code
       - name: Checkout repository
@@ -16,13 +22,13 @@ jobs:
       # Step 2: Make a change, commit, and push
       - name: Commit and Push
         run: |
-          # Configure git with the user name and email of the GitHub Actions bot
-          git config --global user.name "GitHub Actions Bot"
-          git config --global user.email "actions-bot@github.com"
-          
+          # Configure git with the user name and email of the person who triggered the workflow
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
+
           # Append the current timestamp to the README.md file
           echo "Last updated on $(date)" >> README.md
-          
+
           # Add the changes, commit with a message, and push to the main branch
           git add README.md
           git commit -m "feat: update streak"
